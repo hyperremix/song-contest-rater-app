@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./src/index.tsx",
     "name": "song-contest-rater-app",
     "slug": "song-contest-rater-app",
     "version": "1.0.0",
