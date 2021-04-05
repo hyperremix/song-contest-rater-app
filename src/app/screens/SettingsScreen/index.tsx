@@ -1,11 +1,14 @@
 import {
+  Divider,
   Layout,
   Radio,
-  RadioGroup,
   StyleService,
   Text,
   Toggle,
+  useStyleSheet,
 } from '@ui-kitten/components';
+import { ScreenLayout } from 'app/components/ScreenLayout';
+import { ScreenTitle } from 'app/components/ScreenTitle';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,62 +20,72 @@ export const SettingsScreen = () => {
   const dispatch = useDispatch();
   const { actions } = useThemeSlice();
   const { t, i18n } = useTranslation();
+  const styles = useStyleSheet(themedStyles);
 
   const isLightTheme = useSelector(selectIsLightTheme);
 
-  const onThemeChange = (isLightTheme) => {
-    dispatch(actions.changeTheme(isLightTheme));
+  const onThemeChange = (isDarkTheme) => {
+    dispatch(actions.changeTheme(!isDarkTheme));
   };
 
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
   return (
-    <Layout style={styles.container}>
-      <Layout style={styles.item}>
-        <Text style={styles.header} category="h3">
-          {t(...messages.themeHeader())}
-        </Text>
-        <Toggle
-          style={styles.toggle}
-          checked={isLightTheme}
-          onChange={onThemeChange}
-        >
-          {`Checked: ${isLightTheme}`}
-        </Toggle>
-      </Layout>
-      <Layout>
-        <Text style={styles.header} category="h3">
-          {t(...messages.languageHeader())}
-        </Text>
-        <RadioGroup
-          selectedIndex={selectedIndex}
-          onChange={(index) => {
-            setSelectedIndex(index);
-            i18n.changeLanguage(index === 0 ? 'en' : 'de');
-          }}
-        >
-          <Radio>{t(...messages.english())}</Radio>
-          <Radio>{t(...messages.german())}</Radio>
-        </RadioGroup>
-      </Layout>
-    </Layout>
+    <>
+      <ScreenTitle title={t(...messages.settingsTitle())} />
+      <ScreenLayout>
+        <Layout style={styles.item}>
+          <Text style={styles.header}>{t(...messages.themeHeader())}</Text>
+          <Divider />
+          <Layout style={styles.setting}>
+            <Text category="h4">Dark Mode</Text>
+            <Toggle
+              style={styles.toggle}
+              checked={!isLightTheme}
+              onChange={onThemeChange}
+            />
+          </Layout>
+          <Divider />
+        </Layout>
+        <Layout>
+          <Text style={styles.header}>{t(...messages.languageHeader())}</Text>
+          <Divider />
+          <Layout style={styles.setting}>
+            <Text category="h4">{t(...messages.english())}</Text>
+            <Radio
+              checked={i18n.language === 'en'}
+              onChange={() => i18n.changeLanguage('en')}
+            />
+          </Layout>
+          <Divider />
+          <Layout style={styles.setting}>
+            <Text category="h4">{t(...messages.german())}</Text>
+            <Radio
+              checked={i18n.language === 'de'}
+              onChange={() => i18n.changeLanguage('de')}
+            />
+          </Layout>
+          <Divider />
+        </Layout>
+      </ScreenLayout>
+    </>
   );
 };
 
-const styles = StyleService.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: 20,
-    paddingRight: 20,
+const themedStyles = StyleService.create({
+  setting: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 4,
   },
   item: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   toggle: {
     alignSelf: 'flex-start',
   },
   header: {
-    marginBottom: 10,
+    color: 'color-primary-default',
+    marginBottom: 8,
   },
 });

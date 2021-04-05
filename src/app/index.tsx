@@ -29,10 +29,12 @@ const AccountIcon = (props) => <Icon {...props} name="person" />;
 
 const SettingsIcon = (props) => <Icon {...props} name="settings" />;
 
-const BottomTabBar = ({ navigation, state }) => (
+const BottomTabBar = ({ navigation, state, style }) => (
   <BottomNavigation
+    appearance="noIndicator"
     selectedIndex={state.index}
     onSelect={(index) => navigation.navigate(state.routeNames[index])}
+    style={style}
   >
     <BottomNavigationTab icon={HomeIcon} />
     <BottomNavigationTab icon={AccountIcon} />
@@ -52,7 +54,11 @@ export const App = () => {
         <StatusBar style={!isLightTheme ? 'light' : 'dark'}></StatusBar>
         <NavigationContainer>
           <Layout style={styles.container}>
-            <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+            <Navigator
+              tabBar={(props) => (
+                <BottomTabBar {...props} style={styles.bottomNavigation} />
+              )}
+            >
               <Screen name="Home" component={HomeScreen} />
               <Screen name="Account" component={AccountScreen} />
               <Screen name="Settings" component={SettingsScreen} />
@@ -68,6 +74,9 @@ const themedStyles = StyleService.create({
   safeAreaTop: { flex: 0, backgroundColor: 'background-basic-color-2' },
   safeAreaBottom: {
     flex: 1,
+    backgroundColor: 'background-basic-color-2',
+  },
+  bottomNavigation: {
     backgroundColor: 'background-basic-color-2',
   },
   container: {

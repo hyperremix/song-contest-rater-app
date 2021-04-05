@@ -7,6 +7,7 @@ import { translations } from 'locales/translations';
 import { _t } from 'utils/messages';
 
 export const messages = {
+  settingsTitle: () => _t(translations.settings.title, 'Settings'),
   themeHeader: () => _t(translations.settings.themeHeader, 'Theme'),
   languageHeader: () => _t(translations.settings.languageHeader, 'Language'),
   english: () => _t(translations.settings.english, 'English'),

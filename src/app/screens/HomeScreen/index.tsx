@@ -1,11 +1,11 @@
 import { Card, Layout, Text } from '@ui-kitten/components';
-import { NavBar } from 'app/components/NavBar';
+import { ScreenTitle } from 'app/components/ScreenTitle';
 import React from 'react';
 
 export const HomeScreen = () => {
   return (
     <>
-      <NavBar />
+      <ScreenTitle title="Song Contest Rater" />
       <Layout
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
