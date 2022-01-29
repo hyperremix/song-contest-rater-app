@@ -1,16 +1,29 @@
-import { Card, Layout, Text } from '@ui-kitten/components';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Tab } from '@ui-kitten/components';
 import React from 'react';
+import { SignInScreen } from '../SignInScreen';
+import { SignUpScreen } from '../SignUpScreen';
+
+const { Navigator, Screen } = createMaterialTopTabNavigator();
+
+const TopTabBar = ({ navigation, state }) => (
+  <>
+    <Tab title="Sign In" onSelect={() => navigation.navigate(SignInScreen)} />
+    <Tab title="Sign Up" onSelect={() => navigation.navigate(SignUpScreen)} />
+  </>
+);
+
+const TabNavigator = () => (
+  <Navigator tabBar={(props) => <TopTabBar {...props} />}>
+    <Screen name="SignIn" component={SignInScreen} />
+    <Screen name="SignUp" component={SignUpScreen} />
+  </Navigator>
+);
 
 export const AccountScreen = () => {
   return (
     <>
-      <Layout
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Card>
-          <Text>Welcome to the Account Screen</Text>
-        </Card>
-      </Layout>
+      <TabNavigator />
     </>
   );
 };

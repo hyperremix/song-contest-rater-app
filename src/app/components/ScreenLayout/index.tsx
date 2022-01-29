@@ -7,7 +7,7 @@ import { Layout, StyleService } from '@ui-kitten/components';
 import * as React from 'react';
 
 interface Props {
-  children: React.ReactChild[];
+  children: React.ReactChild[] | React.ReactChild;
 }
 
 export const ScreenLayout = ({ children }: Props) => (
