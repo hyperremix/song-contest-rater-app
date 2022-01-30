@@ -6,9 +6,9 @@ import { {{ camelCase sliceName }}Saga } from './saga';
 {{else}}
 import { useInjectReducer } from 'utils/redux-injectors';
 {{/if}}
-import { {{ properCase sliceName }}State } from './types';
+import { T{{ properCase sliceName }}State } from './types';
 
-export const initialState: {{ properCase sliceName }}State = {};
+export const initialState: T{{ properCase sliceName }}State = {};
 
 const slice = createSlice({
   name: '{{ camelCase sliceName }}',
@@ -27,15 +27,3 @@ export const use{{ properCase sliceName }}Slice = () => {
   {{/if}}
   return { actions: slice.actions };
 };
-
-/**
- * Example Usage:
- *
- * export function MyComponentNeedingThisSlice() {
- *  const { actions } = use{{ properCase sliceName }}Slice();
- *
- *  const onButtonClick = (evt) => {
- *    dispatch(actions.someAction());
- *   };
- * }
- */

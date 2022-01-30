@@ -1,0 +1,9 @@
+export const colorError = '#c04b41';
+export const colorWarning = '#e4862e';
+export const colorInfo = '#3f87cc';
+export const colorSuccess = '#588c4c';
+export const colorPrimary = '#ff0070';
+export const colorSecondary = '#469bda';
+export const colorDisabled = '#808080';
+export const colorBackgroundMain = '#2a2a2a';
+export const colorBackgroundDark = '#212121';

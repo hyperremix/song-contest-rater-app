@@ -13,6 +13,7 @@ module.exports = (api) => {
           },
         },
       ],
+      'react-native-reanimated/plugin',
     ],
   };
 };
