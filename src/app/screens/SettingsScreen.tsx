@@ -1,63 +1,37 @@
-import {
-  Divider,
-  Layout,
-  Radio,
-  StyleService,
-  Text,
-  useStyleSheet,
-} from '@ui-kitten/components';
-import { useTranslation } from 'app/hooks/useTranslation';
+import { Button } from 'app/components/common';
+import { LanguageSelector } from 'app/components/settings/LanguageSelector';
+import { useTranslation } from 'app/hooks';
 import { NavBarScreenShell } from 'app/screenShells/NavBarScreenShell';
 import { translations } from 'i18n';
-import { Language } from 'i18n/Language';
 import React, { FC } from 'react';
+import { View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { userActions } from 'store/user';
+import { auth0Client } from 'utils/auth';
 
 export const SettingsScreen: FC = () => {
-  const { t, i18n } = useTranslation();
-  const styles = useStyleSheet(themedStyles);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    await auth0Client.logout();
+    dispatch(userActions.logoutSucceeded());
+  };
 
   return (
     <NavBarScreenShell screenTitle={t(translations.settings.title)}>
-      <Text style={styles.header}>
-        {t(translations.settings.languageHeader)}
-      </Text>
-      <Divider />
-      <Layout style={styles.setting}>
-        <Text category="h4">{t(translations.settings.english)}</Text>
-        <Radio
-          checked={i18n.language === Language.en}
-          onChange={() => i18n.changeLanguage(Language.en)}
-        />
-      </Layout>
-      <Divider />
-      <Layout style={styles.setting}>
-        <Text category="h4">{t(translations.settings.german)}</Text>
-        <Radio
-          checked={i18n.language === Language.de}
-          onChange={() => i18n.changeLanguage(Language.de)}
-        />
-      </Layout>
-      <Divider />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        <LanguageSelector />
+      </View>
+      <Button onPress={handleLogout}>
+        {t(translations.auth.logoutButtonLabel)}
+      </Button>
     </NavBarScreenShell>
   );
 };
-
-const themedStyles = StyleService.create({
-  setting: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 4,
-    marginBottom: 4,
-  },
-  item: {
-    marginBottom: 8,
-  },
-  toggle: {
-    alignSelf: 'flex-start',
-  },
-  header: {
-    color: 'color-primary-default',
-    marginBottom: 8,
-  },
-});

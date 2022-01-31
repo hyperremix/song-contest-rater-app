@@ -5,7 +5,7 @@ import { DashboardScreen } from '../screens/DashboardScreen';
 
 const { Navigator, Screen } = createStackNavigator();
 
-export const DashboardStackNavigation: FC = () => (
+export const DashboardNavigation: FC = () => (
   <Navigator>
     <Screen
       name="dashboard"

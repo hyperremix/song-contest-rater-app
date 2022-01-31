@@ -1,5 +1,0 @@
-// [IMPORT NEW CONTAINERSTATE ABOVE]
-
-export type RootState = {
-  // [INSERT NEW REDUCER KEY ABOVE]
-};

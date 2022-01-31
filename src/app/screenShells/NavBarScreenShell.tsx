@@ -1,5 +1,5 @@
 import { Layout } from '@ui-kitten/components';
-import { NavBar } from 'app/components/common/NavBar';
+import { NavBar } from 'app/components/common';
 import React, { FC, ReactElement } from 'react';
 import { View } from 'react-native';
 import { paddings } from 'theme';
@@ -25,6 +25,6 @@ export const NavBarScreenShell: FC<Props> = ({
       onGoBack={onGoBack}
       accessoryRightIcon={accessoryRightIcon}
     />
-    <View style={[{ flex: 1 }, paddings.tm, paddings.hm]}>{children}</View>
+    <View style={[{ flex: 1 }, paddings.m]}>{children}</View>
   </Layout>
 );

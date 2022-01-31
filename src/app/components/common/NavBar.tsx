@@ -2,15 +2,15 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import {
   Divider,
   Layout,
-  Text,
   TopNavigation,
   TopNavigationAction,
 } from '@ui-kitten/components';
-import { Logo } from 'app/components/common/Logo';
 import React, { cloneElement, FC, ReactElement } from 'react';
 import { View } from 'react-native';
 import { colorBackgroundDark, paddings } from 'theme';
 import { Icon } from './Icon';
+import { Logo } from './Logo';
+import { Text } from './Text';
 
 type Props = {
   screenTitle?: string;
@@ -90,7 +90,7 @@ export const NavBar: FC<Props> = ({
         title={() =>
           screenTitle ? (
             <Text
-              category="h1"
+              variant="h1"
               numberOfLines={1}
               ellipsizeMode="tail"
               style={paddings.hxl}

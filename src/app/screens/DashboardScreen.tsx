@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'app/components/common/Icon';
-import { Logo } from 'app/components/common/Logo';
+import { Icon, Logo } from 'app/components/common';
 import { NavBarScreenShell } from 'app/screenShells/NavBarScreenShell';
 import React, { FC } from 'react';
 import { View } from 'react-native';

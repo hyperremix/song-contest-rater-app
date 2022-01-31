@@ -4,5 +4,15 @@
     "english": "Englisch",
     "german": "Deutsch",
     "title": "Einstellungen"
+  },
+  "error": {
+    "auth": {
+      "title": "Fehler",
+      "message": "Bitte versucht es erneut, wenn du eine bessere Internetverbindung hast.",
+      "buttonLabel": "Zurück"
+    }
+  },
+  "auth": {
+    "loginButtonLabel": "Anmelden mit Auth0"
   }
 }

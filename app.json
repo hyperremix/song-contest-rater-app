@@ -30,7 +30,8 @@
         "READ_EXTERNAL_STORAGE",
         "ACCESS_NETWORK_STATE",
         "ACCESS_WIFI_STATE"
-      ]
+      ],
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
