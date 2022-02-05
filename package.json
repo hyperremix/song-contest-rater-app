@@ -9,6 +9,7 @@
     "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
     "prettier:check": "prettier -c 'src/**/*[.ts|.tsx]'",
     "prettier:fix": "prettier -w 'src/**/*[.ts|.tsx|.json|.js]'",
+    "prettify": "prettier -w",
     "syncversion": "node ./scripts/syncVersionToAppJson.js && yarn prettier -w './app.json'",
     "patch": "yarn version --new-version patch",
     "minor": "yarn version --new-version minor",

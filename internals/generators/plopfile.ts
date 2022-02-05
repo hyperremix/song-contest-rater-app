@@ -7,7 +7,7 @@ type PrettifyData = {
   path: string;
 };
 
-export default (plop: NodePlopAPI) => {
+const runPlop = (plop: NodePlopAPI) => {
   plop.setGenerator('component', componentGenerator);
   plop.setGenerator('slice', sliceGenerator);
 
@@ -17,3 +17,5 @@ export default (plop: NodePlopAPI) => {
     return '';
   });
 };
+
+export default runPlop;

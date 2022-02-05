@@ -1,23 +1,18 @@
 import inquirer from 'inquirer';
 import { Actions, PlopGeneratorConfig } from 'node-plop';
 import path from 'path';
-import { baseGeneratorPath } from '../paths';
 import { pathExists } from '../utils';
 
 inquirer.registerPrompt('directory', require('inquirer-directory'));
 
-export enum SliceProptNames {
+enum SliceProptNames {
   'sliceName' = 'sliceName',
-  'path' = 'path',
   'wantSaga' = 'wantSaga',
 }
 
 type Answers = { [P in SliceProptNames]: string };
 
-export const rootStatePath = path.join(
-  __dirname,
-  '../../../src/types/RootState.ts',
-);
+const basePath = path.join(__dirname, '../../../src/store');
 
 export const sliceGenerator: PlopGeneratorConfig = {
   description: 'Add a redux toolkit slice',
@@ -28,12 +23,6 @@ export const sliceGenerator: PlopGeneratorConfig = {
       message: 'What should it be called (automatically adds ...Slice postfix)',
     },
     {
-      type: 'directory',
-      name: SliceProptNames.path,
-      message: 'Where do you want it to be created?',
-      basePath: `${baseGeneratorPath}`,
-    } as any,
-    {
       type: 'confirm',
       name: SliceProptNames.wantSaga,
       default: true,
@@ -43,58 +32,123 @@ export const sliceGenerator: PlopGeneratorConfig = {
   actions: (data) => {
     const answers = data as Answers;
 
-    const slicePath = `${baseGeneratorPath}/${answers.path}/slice`;
+    const rootStatePath = path.join(basePath, '/TRootState.ts');
+    const rootReducerPath = path.join(basePath, '/rootReducer.ts');
+    const rootSagaPath = path.join(basePath, '/rootSaga.ts');
+    const slicePath = path.join(
+      basePath,
+      `/${answers.sliceName.toLowerCase()}`,
+    );
 
     if (pathExists(slicePath)) {
       throw new Error(`Slice '${answers.sliceName}' already exists`);
     }
-    const actions: Actions = [];
 
-    actions.push({
-      type: 'add',
-      path: `${slicePath}/index.ts`,
-      templateFile: './slice/index.ts.hbs',
-      abortOnFail: true,
-    });
-    actions.push({
-      type: 'add',
-      path: `${slicePath}/selectors.ts`,
-      templateFile: './slice/selectors.ts.hbs',
-      abortOnFail: true,
-    });
-    actions.push({
-      type: 'add',
-      path: `${slicePath}/types.ts`,
-      templateFile: './slice/types.ts.hbs',
-      abortOnFail: true,
-    });
-    actions.push({
-      type: 'modify',
-      path: `${rootStatePath}`,
-      pattern: new RegExp(/.*\/\/.*\[IMPORT NEW CONTAINERSTATE ABOVE\].+\n/),
-      templateFile: './slice/importContainerState.hbs',
-      abortOnFail: true,
-    });
-    actions.push({
-      type: 'modify',
-      path: `${rootStatePath}`,
-      pattern: new RegExp(/.*\/\/.*\[INSERT NEW REDUCER KEY ABOVE\].+\n/),
-      templateFile: './slice/appendRootState.hbs',
-      abortOnFail: true,
-    });
-    if (answers.wantSaga) {
-      actions.push({
+    let actions: Actions = [
+      {
         type: 'add',
-        path: `${slicePath}/saga.ts`,
-        templateFile: './slice/saga.ts.hbs',
+        path: `${slicePath}/index.ts`,
+        templateFile: './slice/index.ts.hbs',
         abortOnFail: true,
-      });
-    }
+      },
+      {
+        type: 'add',
+        path: `${slicePath}/selectors.ts`,
+        templateFile: './slice/selectors.ts.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'add',
+        path: `${slicePath}/types.ts`,
+        templateFile: './slice/types.ts.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'add',
+        path: `${slicePath}/persistConfig.ts`,
+        templateFile: './slice/persistConfig.ts.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'modify',
+        path: `${rootStatePath}`,
+        pattern: new RegExp(/.*\/\/.*\[IMPORT NEW CONTAINERSTATE ABOVE\]\n/),
+        templateFile: './slice/importContainerState.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'modify',
+        path: `${rootStatePath}`,
+        pattern: new RegExp(/.*\/\/.*\[INSERT NEW REDUCER KEY ABOVE\]\n/),
+        templateFile: './slice/appendRootState.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'modify',
+        path: `${rootReducerPath}`,
+        pattern: new RegExp(/.*\/\/.*\[IMPORT NEW REDUCER ABOVE\]\n/),
+        templateFile: './slice/importRootReducer.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'modify',
+        path: `${rootReducerPath}`,
+        pattern: new RegExp(/.*\/\/.*\[INSERT NEW PERSISTED REDUCER ABOVE\]\n/),
+        templateFile: './slice/appendRootReducer.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'modify',
+        path: `${rootReducerPath}`,
+        pattern: new RegExp(/.*\/\/.*\[INSERT NEW REDUCER KEY ABOVE\]\n/),
+        templateFile: './slice/appendClearPersistStorage.hbs',
+        abortOnFail: true,
+      },
+      {
+        type: 'prettify',
+        data: { path: `${slicePath}/**` },
+      },
+      {
+        type: 'prettify',
+        data: { path: `${basePath}/rootReducer.ts` },
+      },
+      {
+        type: 'prettify',
+        data: { path: `${basePath}/TRootState.ts` },
+      },
+    ];
 
-    actions.push({
-      type: 'prettify',
-      data: { path: `${slicePath}/**` },
-    });
+    console.log(`${basePath}/TRootState.ts`);
+
+    if (answers.wantSaga) {
+      actions = [
+        ...actions,
+        {
+          type: 'add',
+          path: `${slicePath}/saga.ts`,
+          templateFile: './slice/saga.ts.hbs',
+          abortOnFail: true,
+        },
+        {
+          type: 'modify',
+          path: `${rootSagaPath}`,
+          pattern: new RegExp(/.*\/\/.*\[IMPORT NEW SAGA ABOVE\]\n/),
+          templateFile: './slice/importRootSaga.hbs',
+          abortOnFail: true,
+        },
+        {
+          type: 'modify',
+          path: `${rootSagaPath}`,
+          pattern: new RegExp(/.*\/\/.*\[INSERT NEW SAGA ABOVE\]\n/),
+          templateFile: './slice/appendRootSaga.hbs',
+          abortOnFail: true,
+        },
+        {
+          type: 'prettify',
+          data: { path: `${basePath}/rootSaga.ts` },
+        },
+      ];
+    }
 
     return actions;
   },

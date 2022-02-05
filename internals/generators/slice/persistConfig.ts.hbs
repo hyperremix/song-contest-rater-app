@@ -1,0 +1,11 @@
+import ExpoFileSystemStorage from 'redux-persist-expo-filesystem';
+import { PersistConfig } from 'redux-persist/es/types';
+import { rootPersistKey } from 'store/rootPersistKey';
+import { T{{ properCase sliceName }}State } from 'store/{{ camelCase sliceName }}/types';
+
+export const {{ camelCase sliceName }}PersistConfig: PersistConfig<T{{ properCase sliceName }}State> = {
+  whitelist: [],
+  key: `${rootPersistKey}-{{ camelCase sliceName }}`,
+  storage: ExpoFileSystemStorage,
+  version: 1,
+};

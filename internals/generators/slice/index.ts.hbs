@@ -1,11 +1,4 @@
-import { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from 'utils/@reduxjs/toolkit';
-{{#if wantSaga}}
-import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { {{ camelCase sliceName }}Saga } from './saga';
-{{else}}
-import { useInjectReducer } from 'utils/redux-injectors';
-{{/if}}
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { T{{ properCase sliceName }}State } from './types';
 
 export const initialState: T{{ properCase sliceName }}State = {};
@@ -18,12 +11,8 @@ const slice = createSlice({
   },
 });
 
-export const { actions: {{ camelCase sliceName }}Actions } = slice;
-
-export const use{{ properCase sliceName }}Slice = () => {
-  useInjectReducer({ key: slice.name, reducer: slice.reducer });
-  {{#if wantSaga}}
-  useInjectSaga({ key: slice.name, saga: {{ camelCase sliceName }}Saga });
-  {{/if}}
-  return { actions: slice.actions };
-};
+export const {
+  actions: {{ camelCase sliceName }}Actions,
+  name: {{ camelCase sliceName }}SliceKey,
+  reducer: {{ camelCase sliceName }}Reducer,
+} = slice;
